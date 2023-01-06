@@ -3,10 +3,49 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Autocomplete from "@mui/material/Autocomplete";
+import axios from "axios";
 
 const AddProducts = () => {
   // seletion values from server
 
+  const [values, setValues] = React.useState({
+    productType: "",
+    title: "",
+    brand: "",
+    quantity: 0,
+
+    status: "",
+
+    description: "",
+    discountPrice: "",
+    regularPrice: "",
+    image1: "",
+    image2: "",
+    image3: "",
+    image4: "",
+
+    processorBrand: "",
+    processorModel: "",
+    generationOrSeries: "",
+    processorFrequencyMin: "",
+    processorFrequencyMax: "",
+    processorCore: "",
+    processTread: "",
+    cupCache: "",
+    displaySize: "",
+    displayResolution: "",
+    ram: "",
+    ramType: "",
+    busSpeed: "",
+    maxRAMCapacity: "",
+    ramRemovable: "",
+    totalRAMSlot: "",
+  });
+
+  const handleChangeForm = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+  console.log(values);
   const productTypes = [
     {
       value: "laptop",
@@ -32,7 +71,6 @@ const AddProducts = () => {
     { value: "intel core i5", label: "Intel Core i5" },
     { value: "intel core i6", label: "Intel Core i6" },
     { value: "intel core i7", label: "Intel Core i7" },
-    { value: "", label: "" },
   ];
 
   const processorBrand = [
@@ -59,12 +97,24 @@ const AddProducts = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const title = event.target.title.value;
-    const productType = event.target.productType.maxRAMCapacity;
+    const url = `http://localhost:5000/api/v1/products`;
+    console.log(values);
 
-    console.log(title);
-    console.log(productType);
+    axios
+      .post(url, values)
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function (response) {
+        console.log(response);
+
+        if (response.status === 200) {
+          event.target.reset();
+        }
+      });
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -87,6 +137,7 @@ const AddProducts = () => {
               placeholder="Title"
               name="title"
               class="input input-bordered input-error w-full max-w-xs"
+              onChange={handleChangeForm("title")}
             />
             <label class="label"></label>
           </div>
@@ -94,8 +145,8 @@ const AddProducts = () => {
           <TextField
             select
             label="Product Type"
-            defaultValue="laptop"
             name="productType"
+            onChange={handleChangeForm("productType")}
           >
             {productTypes.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -106,24 +157,32 @@ const AddProducts = () => {
 
           {/* Quantity */}
 
-          <TextField label="Quantity" type="number" name="quantity"></TextField>
+          <TextField
+            label="Quantity"
+            type="Number"
+            onChange={handleChangeForm("quantity")}
+            name="quantity"
+          ></TextField>
 
           {/* // Brand Name */}
 
-          <Autocomplete
-            disablePortal
-            options={brand}
-            sx={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Brand Name" />
-            )}
-          />
+          <TextField
+            select
+            label="Select Brand Name"
+            onChange={handleChangeForm("brand")}
+          >
+            {brand.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
           <TextField
             select
             label="Status"
-            defaultValue="in-stock"
             name="status"
+            onChange={handleChangeForm("status")}
           >
             {status.map((option) => (
               <MenuItem key={option.value} value={option.value}>
@@ -136,12 +195,14 @@ const AddProducts = () => {
             label="Discount Price"
             type="number"
             name="discountPrice"
+            onChange={handleChangeForm("discountPrice")}
           ></TextField>
 
           <TextField
             label="Regular Price"
             type="number"
             name="regularPrice"
+            onChange={handleChangeForm("regularPrice")}
           ></TextField>
         </Box>
 
@@ -154,17 +215,29 @@ const AddProducts = () => {
           noValidate
           autoComplete="off"
         >
-          <TextField label="Image Link" type="text" name="image-1"></TextField>
+          <TextField
+            label="Image Link"
+            onChange={handleChangeForm("image1")}
+            type="text"
+            name="image1"
+          ></TextField>
           <TextField
             label="Image Link 2"
+            onChange={handleChangeForm("image2")}
             type="text"
-            name="image-2"
+            name="image2"
           ></TextField>
-          <TextField label="Image Link3" type="text" name="image-3"></TextField>
+          <TextField
+            label="Image Link3"
+            onChange={handleChangeForm("image3")}
+            type="text"
+            name="image3"
+          ></TextField>
           <TextField
             label="Image Link 4"
+            onChange={handleChangeForm("image4")}
             type="text"
-            name="image-4"
+            name="image4"
           ></TextField>
         </Box>
 
@@ -178,7 +251,12 @@ const AddProducts = () => {
           autoComplete="off"
         >
           {/* Processor Brand */}
-          <TextField select label="Processor Brand" name="processorBrand">
+          <TextField
+            select
+            label="Processor Brand"
+            onChange={handleChangeForm("processorBrand")}
+            name="processorBrand"
+          >
             {processorBrand.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
@@ -186,7 +264,12 @@ const AddProducts = () => {
             ))}
           </TextField>
 
-          <TextField select label="Processor Model" name="processorModel">
+          <TextField
+            select
+            label="Processor Model"
+            onChange={handleChangeForm("processorModel")}
+            name="processorModel"
+          >
             {processorModel.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
@@ -197,31 +280,41 @@ const AddProducts = () => {
           <TextField
             label="Generation / Series"
             type="number"
+            onChange={handleChangeForm("generationOrSeries")}
             name="generationOrSeries"
           ></TextField>
 
           <TextField
             label="Processor Frequency Min"
             type="number"
+            onChange={handleChangeForm("processorFrequencyMin")}
             name="processorFrequencyMin"
           ></TextField>
           <TextField
             label="Processor Frequency Max "
             type="number"
+            onChange={handleChangeForm("processorFrequencyMax")}
             name="processorFrequencyMax"
           ></TextField>
 
           <TextField
             label="Processor Core"
             type="number"
+            onChange={handleChangeForm("processorCore")}
             name="processorCore"
           ></TextField>
           <TextField
             label="processTread"
             type="number"
+            onChange={handleChangeForm("processTread")}
             name="processTread"
           ></TextField>
-          <TextField label="CUP Cache" type="text" name="cupCache"></TextField>
+          <TextField
+            label="CUP Cache"
+            type="text"
+            onChange={handleChangeForm("cupCache")}
+            name="cupCache"
+          ></TextField>
         </Box>
 
         {/* Display Specification */}
@@ -238,16 +331,19 @@ const AddProducts = () => {
           <TextField
             label="Display Size"
             type="number"
+            onChange={handleChangeForm("displaySize")}
             name="displaySize"
           ></TextField>
           <TextField
             label="Display Resolution"
             type="text"
+            onChange={handleChangeForm("displayResolution")}
             name="displayResolution"
           ></TextField>
           <TextField
             label="Display Features"
             type="text"
+            onChange={handleChangeForm("displayFeatures")}
             name="displayFeatures"
           ></TextField>
         </Box>
@@ -261,16 +357,28 @@ const AddProducts = () => {
           noValidate
           autoComplete="off"
         >
-          <TextField label="RAM Size" type="number" name="ram"></TextField>
+          <TextField
+            label="RAM Size"
+            onChange={handleChangeForm("ram")}
+            type="number"
+            name="ram"
+          ></TextField>
 
-          <TextField label="RAM Type" type="text" name="ramType"></TextField>
+          <TextField
+            label="RAM Type"
+            onChange={handleChangeForm("ramType")}
+            type="text"
+            name="ramType"
+          ></TextField>
           <TextField
             label="BUS Speed"
             type="number"
+            onChange={handleChangeForm("busSpeed")}
             name="busSpeed"
           ></TextField>
           <TextField
             label="Ram Removable"
+            onChange={handleChangeForm("ramRemovable")}
             type="number"
             name="ramRemovable"
           ></TextField>
@@ -278,15 +386,15 @@ const AddProducts = () => {
           <TextField
             label="Total RAM Slot"
             type="number"
+            onChange={handleChangeForm("totalRAMSlot")}
             name="totalRAMSlot"
           ></TextField>
 
           <TextField
             label="Max RAM Capacity"
             type="text"
+            onChange={handleChangeForm("maxRAMCapacity")}
             name="maxRAMCapacity"
-            value
-            onChange={handleSubmit}
           ></TextField>
         </Box>
 

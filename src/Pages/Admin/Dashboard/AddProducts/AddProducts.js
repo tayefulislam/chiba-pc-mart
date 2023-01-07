@@ -2,14 +2,20 @@ import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import Autocomplete from "@mui/material/Autocomplete";
+
 import axios from "axios";
+
+const short = require("short-uuid");
 
 const AddProducts = () => {
   // seletion values from server
 
+  const pid = "PID-" + short.generate().toLocaleUpperCase().slice(0, 10);
+
   const [values, setValues] = React.useState({
     productType: "",
+    productId: pid,
+    urlTag: "",
     title: "",
     brand: "",
     quantity: 0,
@@ -40,10 +46,81 @@ const AddProducts = () => {
     maxRAMCapacity: "",
     ramRemovable: "",
     totalRAMSlot: "",
+
+    // storage section
+
+    storageType: "",
+    storageCapacity: "",
+    hddRPM: "",
+    extraM2Slot: "",
+    supportedSSDType: "",
+
+    // Graphics
+    graphicsModel: "",
+    graphicsMemory: "",
+
+    // // KeyBoard & Touch Pad
+    keyboardType: "",
+    keyboardFeatures: "",
+    touchPad: "",
+    touchPadFeatures: "",
+
+    // // Camera and Audio
+
+    webcam: "",
+    speaker: "",
+    microPhone: "",
+
+    // // Port & Slots
+
+    opticalDrive: "",
+    cardReader: "",
+    HDMIPort: "",
+    USB3Port: "",
+    USBTypeCPort_ThunderboltPort: "",
+    headPhone_MicroPhonePort: "",
+
+    // // Network and Connectivity
+
+    LAN: "",
+    Wifi: "",
+    bluetooth: "",
+    // // Security
+    fingerprintSensor: "",
+
+    // // Software
+
+    Os: "",
+    // //Power
+
+    batteryType: "",
+    batteryCapacity: "",
+    backupTime: "",
+    adapterType: "",
+
+    // // Physical Specification
+
+    color: "",
+    dimensions: "",
+    weight: "",
+
+    // // Warranty
+    warrantyDetails: "",
   });
 
   const handleChangeForm = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
+    if ((name = "title")) {
+      const mainTitle =
+        event.target.value
+          .replaceAll(" " || "'" || '"' || "=" || "(" || ")" || ",", "-")
+          .toLocaleLowerCase() +
+        "-" +
+        short.generate().toLocaleLowerCase().slice(0, 4);
+
+      setValues({ ...values, ["urlTag"]: mainTitle });
+      console.log(mainTitle);
+    }
   };
   console.log(values);
   const productTypes = [
@@ -115,6 +192,8 @@ const AddProducts = () => {
       });
   };
 
+  console.log(short.generate());
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -136,7 +215,7 @@ const AddProducts = () => {
               required
               placeholder="Title"
               name="title"
-              class="input input-bordered input-error w-full max-w-xs"
+              class="input w-[600px] p-2"
               onChange={handleChangeForm("title")}
             />
             <label class="label"></label>
@@ -348,7 +427,7 @@ const AddProducts = () => {
           ></TextField>
         </Box>
 
-        <h1 className="p-2">Display Specification</h1>
+        <h1 className="p-2">RAM Specification</h1>
 
         <Box
           sx={{
@@ -379,7 +458,7 @@ const AddProducts = () => {
           <TextField
             label="Ram Removable"
             onChange={handleChangeForm("ramRemovable")}
-            type="number"
+            type="text"
             name="ramRemovable"
           ></TextField>
 
@@ -395,6 +474,287 @@ const AddProducts = () => {
             type="text"
             onChange={handleChangeForm("maxRAMCapacity")}
             name="maxRAMCapacity"
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Storage Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Storage Type"
+            onChange={handleChangeForm("storageType")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Storage Capacity"
+            onChange={handleChangeForm("storageCapacity")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="HDD RPM"
+            type="number"
+            onChange={handleChangeForm("busSpeed")}
+          ></TextField>
+          <TextField
+            label="Supported SSD Type"
+            onChange={handleChangeForm("supportedSSDType")}
+            type="text"
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Graphics Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Graphics Model"
+            onChange={handleChangeForm("graphicsModel")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Graphics Memory"
+            onChange={handleChangeForm("graphicsMemory")}
+            type="text"
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">KeyBoard and Touch Pad Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Keyboard Type"
+            onChange={handleChangeForm("keyboardType")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Keyboard Features"
+            onChange={handleChangeForm("keyboardFeatures")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="Touch Pad"
+            type="text"
+            onChange={handleChangeForm("touchPad")}
+          ></TextField>
+          <TextField
+            label="Touch Pad Features"
+            onChange={handleChangeForm("touchPadFeatures")}
+            type="text"
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Camera and Audio Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Webcam"
+            onChange={handleChangeForm("webcam")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Speaker"
+            onChange={handleChangeForm("speaker")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="microPhone"
+            type="text"
+            onChange={handleChangeForm("microPhone")}
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Port And Slots Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Optical Drive"
+            onChange={handleChangeForm("opticalDrive")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="HDMI Port"
+            onChange={handleChangeForm("HDMIPort")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="USB3 Port"
+            type="text"
+            onChange={handleChangeForm("USB3Port")}
+          ></TextField>
+          <TextField
+            label="USB Type C Port Thunderbolt Port"
+            type="text"
+            onChange={handleChangeForm("USBTypeCPort_ThunderboltPort")}
+          ></TextField>
+          <TextField
+            label="Head Phone & Micro Phone Port"
+            type="text"
+            onChange={handleChangeForm("headPhone_MicroPhonePort")}
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Network and Connectivity Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="LAN"
+            onChange={handleChangeForm("LAN")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Wifi"
+            onChange={handleChangeForm("Wifi")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="bluetooth"
+            type="Number"
+            onChange={handleChangeForm("bluetooth")}
+          ></TextField>
+        </Box>
+        <h1 className="p-2">Security Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Fingerprint Sensor"
+            onChange={handleChangeForm("fingerprintSensor")}
+            type="text"
+          ></TextField>
+        </Box>
+        <h1 className="p-2">Software Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Os"
+            onChange={handleChangeForm("Os")}
+            type="text"
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Power and Connectivity Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Battery Type"
+            onChange={handleChangeForm("batteryType")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Battery Capacity"
+            onChange={handleChangeForm("batteryCapacity")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="Backup Time"
+            type="text"
+            onChange={handleChangeForm("backupTime")}
+          ></TextField>
+          <TextField
+            label="Adapter Type"
+            type="text"
+            onChange={handleChangeForm("adapterType")}
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Physical Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Color"
+            onChange={handleChangeForm("color")}
+            type="text"
+          ></TextField>
+
+          <TextField
+            label="Dimensions"
+            onChange={handleChangeForm("dimensions")}
+            type="text"
+          ></TextField>
+          <TextField
+            label="Weight"
+            type="text"
+            onChange={handleChangeForm("weight")}
+          ></TextField>
+        </Box>
+        <h1 className="p-2">Warranty Details</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Warranty Details"
+            onChange={handleChangeForm("warrantyDetails")}
+            type="text"
           ></TextField>
         </Box>
 

@@ -110,17 +110,6 @@ const AddProducts = () => {
 
   const handleChangeForm = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
-    if ((name = "title")) {
-      const mainTitle =
-        event.target.value
-          .replaceAll(" " || "'" || '"' || "=" || "(" || ")" || ",", "-")
-          .toLocaleLowerCase() +
-        "-" +
-        short.generate().toLocaleLowerCase().slice(0, 4);
-
-      setValues({ ...values, ["urlTag"]: mainTitle });
-      console.log(mainTitle);
-    }
   };
   console.log(values);
   const productTypes = [
@@ -173,9 +162,30 @@ const AddProducts = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const mainTitle =
+      values.urlTag
+        .replaceAll(" " || "'" || '"' || "=" || ",", "-")
+        .toLocaleLowerCase() +
+      "-" +
+      short.generate().toLocaleLowerCase().slice(0, 4);
+
+    values.url = mainTitle;
+
+    const removeEmptyValues = (object) => {
+      for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+          var value = object[key];
+          if (value === null || value === undefined || value === "") {
+            delete object[key];
+          }
+        }
+      }
+    };
+
+    removeEmptyValues(values);
+    console.log(values);
 
     const url = `http://localhost:5000/api/v1/products`;
-    console.log(values);
 
     axios
       .post(url, values)
@@ -217,6 +227,21 @@ const AddProducts = () => {
               name="title"
               class="input w-[600px] p-2"
               onChange={handleChangeForm("title")}
+            />
+            <label class="label"></label>
+          </div>
+
+          <div class="form-control w-full max-w-xs">
+            <label class="label">
+              <span class="label-text">URL Tag</span>
+            </label>
+            <input
+              type="text"
+              required
+              placeholder="URL Tag"
+              name="urlTag"
+              class="input w-[600px] p-2"
+              onChange={handleChangeForm("urlTag")}
             />
             <label class="label"></label>
           </div>

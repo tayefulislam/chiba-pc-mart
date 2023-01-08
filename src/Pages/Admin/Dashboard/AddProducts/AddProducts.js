@@ -169,7 +169,7 @@ const AddProducts = () => {
       "-" +
       short.generate().toLocaleLowerCase().slice(0, 4);
 
-    values.url = mainTitle;
+    values.slug = mainTitle;
 
     const removeEmptyValues = (object) => {
       for (var key in object) {

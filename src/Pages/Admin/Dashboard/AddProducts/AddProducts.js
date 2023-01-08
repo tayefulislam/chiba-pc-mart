@@ -3,18 +3,13 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 
-import axios from "axios";
-
 const short = require("short-uuid");
 
 const AddProducts = () => {
   // seletion values from server
 
-  const pid = "PID-" + short.generate().toLocaleUpperCase().slice(0, 10);
-
   const [values, setValues] = React.useState({
     productType: "",
-    productId: pid,
     urlTag: "",
     title: "",
     brand: "",
@@ -46,6 +41,8 @@ const AddProducts = () => {
     maxRAMCapacity: "",
     ramRemovable: "",
     totalRAMSlot: "",
+
+    chipsetModel: "",
 
     // storage section
 
@@ -133,6 +130,7 @@ const AddProducts = () => {
   const processorModel = [
     { value: "amd ryzen 3", label: "AMD ryzen 3" },
     { value: "intel celeron n4500", label: "Intel Celeron N4500" },
+    { value: "celeron n4020", label: "Celeron N4020" },
     { value: "intel core i3", label: "Intel Core i3" },
     { value: "intel core i5", label: "Intel Core i5" },
     { value: "intel core i6", label: "Intel Core i6" },
@@ -156,11 +154,12 @@ const AddProducts = () => {
   const brand = [
     { value: "apple", label: "Apple" },
     { value: "hp", label: "HP" },
-
     { value: "macbook", label: "MacBook" },
+    { value: "lenovo", label: "Lenovo" },
   ];
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
+    const pid = "PID-" + short.generate().toLocaleUpperCase().slice(0, 10);
     event.preventDefault();
     const mainTitle =
       values.urlTag
@@ -182,27 +181,74 @@ const AddProducts = () => {
       }
     };
 
-    removeEmptyValues(values);
     console.log(values);
 
-    const url = `http://localhost:5000/api/v1/products`;
+    removeEmptyValues(values);
 
-    axios
-      .post(url, values)
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function (response) {
-        console.log(response);
+    const handleUrlClear = () => {
+      imageUrls = [];
+    };
+    let imageUrls = [];
+    const makeArrayImageLinks = (object) => {
+      for (var key in object) {
+        if (object.hasOwnProperty(key)) {
+          // console.log(key);
+          var value = object[key];
 
-        if (response.status === 200) {
-          event.target.reset();
+          if (key.includes("image")) {
+            imageUrls.push(value);
+          }
         }
+      }
+    };
+    makeArrayImageLinks(values);
+    // add image link after make array
+
+    values.imageUrls = imageUrls;
+    console.log(imageUrls);
+    values.productId = pid;
+
+    // const url = `http://localhost:5000/api/v1/products`;
+
+    // axios
+    //   .post(url, values)
+    //   .catch(function (error) {
+    //     // handle error
+    //     console.log(error);
+    //   })
+    //   .then(function (response) {
+    //     console.log(response);
+
+    //     if (response.status === 200) {
+    //       event.target.reset();
+    //     }
+    //   });
+
+    console.log("final", values);
+
+    async function postData(url = "", data = {}) {
+      // Default options are marked with *
+      const response = await fetch(url, {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+
+        headers: {
+          "Content-Type": "application/json",
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+
+        body: JSON.stringify(data),
       });
+
+      return response.json();
+    }
+
+    postData("http://localhost:5000/api/v1/products", values).then((data) => {
+      console.log(data); // JSON data parsed by `data.json()` call
+      handleUrlClear();
+    });
   };
 
-  console.log(short.generate());
+  // console.log(short.generate());
 
   return (
     <div>
@@ -499,6 +545,22 @@ const AddProducts = () => {
             type="text"
             onChange={handleChangeForm("maxRAMCapacity")}
             name="maxRAMCapacity"
+          ></TextField>
+        </Box>
+
+        <h1 className="p-2">Chipset Specification</h1>
+
+        <Box
+          sx={{
+            "& > :not(style)": { m: 1, width: "25ch" },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <TextField
+            label="Chipset Model"
+            onChange={handleChangeForm("chipsetModel")}
+            type="text"
           ></TextField>
         </Box>
 

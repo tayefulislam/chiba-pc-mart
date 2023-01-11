@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useProducts } from "../../../../context/ProductProvider";
 import Product from "./Product/Product";
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
-  console.log(products);
-
-  // fetch products data from db
-
-  useEffect(() => {
-    fetch("https://chibapcmartdemo.onrender.com/api/v1/products")
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.result);
-      });
-  }, []);
+  const { products } = useProducts();
 
   return (
     <div>
       <div className="grid  grid-cols-2 sm:grid md:grid-cols-3 gap-3 px-2 mt-3">
-        {products.map((product, index) => {
+        {products?.map((product, index) => {
           return <Product product={product} key={index}></Product>;
         })}
       </div>

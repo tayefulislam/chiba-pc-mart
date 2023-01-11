@@ -159,17 +159,23 @@ const AddProducts = () => {
   ];
 
   const handleSubmit = async (event) => {
-    const pid = "PID-" + short.generate().toLocaleUpperCase().slice(0, 10);
     event.preventDefault();
+
+    // genarate unique Product ID
+    const pid = "" + short.generate().toLocaleUpperCase().slice(0, 10);
+
+    // converttitle to -slug
     const mainTitle =
       values.urlTag
         .replaceAll(" " || "'" || '"' || "=" || ",", "-")
         .toLocaleLowerCase() +
       "-" +
-      short.generate().toLocaleLowerCase().slice(0, 4);
+      short.generate().toLocaleLowerCase().slice(0, 4) +
+      values.productType;
 
     values.slug = mainTitle;
 
+    // Remove empty values
     const removeEmptyValues = (object) => {
       for (var key in object) {
         if (object.hasOwnProperty(key)) {
@@ -185,27 +191,29 @@ const AddProducts = () => {
 
     removeEmptyValues(values);
 
-    const handleUrlClear = () => {
-      imageUrls = [];
-    };
-    let imageUrls = [];
-    const makeArrayImageLinks = (object) => {
-      for (var key in object) {
-        if (object.hasOwnProperty(key)) {
-          // console.log(key);
-          var value = object[key];
+    // const handleUrlClear = () => {
+    //   imageUrls = [];
+    // };
+    // let imageUrls = [];
+    // const makeArrayImageLinks = (object) => {
+    //   for (var key in object) {
+    //     if (object.hasOwnProperty(key)) {
+    //       // console.log(key);
+    //       var value = object[key];
 
-          if (key.includes("image")) {
-            imageUrls.push(value);
-          }
-        }
-      }
-    };
-    makeArrayImageLinks(values);
+    //       if (key.includes("image")) {
+    //         imageUrls.push(value);
+    //       }
+    //     }
+    //   }
+    // };
+    // makeArrayImageLinks(values);
     // add image link after make array
 
-    values.imageUrls = imageUrls;
-    console.log(imageUrls);
+    // values.imageUrls = imageUrls;
+    // console.log(imageUrls);
+
+    // inject pid
     values.productId = pid;
 
     // const url = `http://localhost:5000/api/v1/products`;
@@ -244,7 +252,6 @@ const AddProducts = () => {
 
     postData("http://localhost:5000/api/v1/products", values).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
-      handleUrlClear();
     });
   };
 

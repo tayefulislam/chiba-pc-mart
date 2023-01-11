@@ -128,13 +128,14 @@ const AddProducts = () => {
   // ]
 
   const processorModel = [
-    { value: "amd ryzen 3", label: "AMD ryzen 3" },
-    { value: "intel celeron n4500", label: "Intel Celeron N4500" },
+    { value: "ryzen 3", label: "ryzen 3" },
+    { value: "celeron n4500", label: "Celeron N4500" },
     { value: "celeron n4020", label: "Celeron N4020" },
-    { value: "intel core i3", label: "Intel Core i3" },
-    { value: "intel core i5", label: "Intel Core i5" },
-    { value: "intel core i6", label: "Intel Core i6" },
-    { value: "intel core i7", label: "Intel Core i7" },
+    { value: "celeron 5205u", label: "Celeron 5205U" },
+    { value: "core i3", label: "Core i3" },
+    { value: "core i5", label: "Core i5" },
+    { value: "core i6", label: "Core i6" },
+    { value: "core i7", label: "Core i7" },
   ];
 
   const processorBrand = [
@@ -152,10 +153,14 @@ const AddProducts = () => {
   ];
 
   const brand = [
+    { value: "acer", label: "Acer" },
     { value: "apple", label: "Apple" },
+    { value: "asus", label: "Asus" },
+
     { value: "hp", label: "HP" },
     { value: "macbook", label: "MacBook" },
     { value: "lenovo", label: "Lenovo" },
+    { value: "toshiba", label: "Toshiba" },
   ];
 
   const handleSubmit = async (event) => {
@@ -170,8 +175,9 @@ const AddProducts = () => {
         .replaceAll(" " || "'" || '"' || "=" || ",", "-")
         .toLocaleLowerCase() +
       "-" +
-      short.generate().toLocaleLowerCase().slice(0, 4) +
-      values.productType;
+      values.productType +
+      "-" +
+      short.generate().toLocaleLowerCase().slice(0, 3);
 
     values.slug = mainTitle;
 
@@ -252,6 +258,9 @@ const AddProducts = () => {
 
     postData("http://localhost:5000/api/v1/products", values).then((data) => {
       console.log(data); // JSON data parsed by `data.json()` call
+      if (data.status === "success") {
+        event.target.reset();
+      }
     });
   };
 

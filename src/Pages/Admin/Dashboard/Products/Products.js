@@ -3,9 +3,23 @@ import { useProducts } from "../../../../context/ProductProvider";
 import Product from "./Product/Product";
 
 const Products = () => {
-  const { state } = useProducts();
+  const {
+    state: { products, loading, error },
+  } = useProducts();
 
   console.log("Products", state);
+
+  let content;
+
+  if (loading) {
+    return (content = <p>Loading</p>);
+  }
+  if (loading) {
+    return (content = <p>Erre</p>);
+  }
+  if (loading) {
+    return (content = <p>Loading</p>);
+  }
 
   return (
     <div>

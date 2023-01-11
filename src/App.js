@@ -1,11 +1,11 @@
 import "./App.css";
-// import AddProducts from "./Pages/Admin/Dashboard/AddProducts/AddProducts";
-import Product from "./Pages/Admin/Dashboard/Product/Product";
+
+import Products from "./Pages/Admin/Dashboard/Products/Products";
 
 function App() {
   return (
     <div className="App">
-      <Product></Product>
+      <Products></Products>
     </div>
   );
 }

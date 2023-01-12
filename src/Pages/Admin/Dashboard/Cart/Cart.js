@@ -2,7 +2,7 @@ import React from "react";
 import { useProducts } from "../../../../context/ProductProvider";
 
 const Cart = () => {
-  const { state } = useProducts();
+  const { state, dispatch } = useProducts();
 
   console.log("from cart", state);
 
@@ -42,12 +42,13 @@ const Cart = () => {
                   <th>
                     <div class="form-control">
                       <label class="input-group">
-                        <span>-</span>
+                        <span onClick={() => dispatch({ type: "" })}>-</span>
                         <h1 className="px-2">{item?.quantity}</h1>
                         <span>+</span>
                       </label>
                     </div>
                   </th>
+                  <td>{item.price * item.quantity}</td>
                 </tr>
               );
             })}

@@ -1,3 +1,5 @@
+import { actionTypes } from "./actionTypes";
+
 export const initialState = {
   loading: false,
   products: [],
@@ -7,7 +9,19 @@ export const initialState = {
 
 export const ProductReducer = (state, action) => {
   // console.log(action?.payload);
-  console.log(state);
+  // console.log(state);
+
+  const { cart } = state;
+  console.log();
+
+  const itemExists = cart?.findIndex(
+    (item) => item?.productId === action?.payload?.productId
+  );
+
+  if (itemExists) {
+    console.log(itemExists, "found");
+  }
+
   switch (action.type) {
     case "FETCHING_START":
       return {
@@ -31,10 +45,18 @@ export const ProductReducer = (state, action) => {
       };
 
     case "ADD_TO_CART":
+      if (itemExists) {
+        return {
+          ...state,
+          quantity: cart[itemExists].quantity + 1,
+        };
+      }
       return {
         ...state,
         cart: [...state.cart, action.payload],
       };
+
+    // case actionTypes
 
     default:
       return state;

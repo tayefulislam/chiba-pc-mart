@@ -1,9 +1,10 @@
 import React from "react";
 
 import { useProducts } from "../../../../../context/ProductProvider";
+import { actionTypes } from "../../../../../State/ProductState/actionTypes";
 
 const Product = ({ product }) => {
-  console.log(product);
+  // console.log(product);
   const { state, dispatch } = useProducts();
   const { image1, title, _id, productId, discountPrice } = product;
 
@@ -18,7 +19,7 @@ const Product = ({ product }) => {
 
   // console.log("From Product", dispatch);
 
-  console.log("Product Card", state);
+  // console.log("Product Card", state);
 
   return (
     <div className="card max-w-[300px]">
@@ -40,7 +41,7 @@ const Product = ({ product }) => {
 
         <button
           onClick={() =>
-            dispatch({ type: "ADD_TO_CART", payload: cartProduct })
+            dispatch({ type: actionTypes.ADD_TO_CART, payload: cartProduct })
           }
           className="btn btn-primary"
         >

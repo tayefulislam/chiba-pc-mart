@@ -1,11 +1,27 @@
 import React from "react";
 
+import { useProducts } from "../../../../../context/ProductProvider";
+
 const Product = ({ product }) => {
   console.log(product);
+  const { state, dispatch } = useProducts();
+  const { image1, title, _id, productId, discountPrice } = product;
 
-  // const { product,} = product;
+  const cartProduct = {
+    _id,
+    productId,
+    title,
+    image1,
+    quantity: 1,
+    price: discountPrice,
+  };
+
+  // console.log("From Product", dispatch);
+
+  console.log("Product Card", state);
+
   return (
-    <div className="card max-w-[300px] shadow-xl">
+    <div className="card max-w-[300px]">
       <div className="mx-auto">
         <img src={product.image1} alt={product.title} />
       </div>
@@ -22,7 +38,14 @@ const Product = ({ product }) => {
           </div>
         </div>
 
-        <button className="btn btn-primary">Add To Cart</button>
+        <button
+          onClick={() =>
+            dispatch({ type: "ADD_TO_CART", payload: cartProduct })
+          }
+          className="btn btn-primary"
+        >
+          Add To Cart
+        </button>
       </div>
     </div>
   );

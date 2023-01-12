@@ -10,14 +10,10 @@ const ProductProvider = ({ children }) => {
   const [state, dispatch] = useReducer(ProductReducer, initialState);
 
   useEffect(() => {
-    dispatch({ type: "FETCHING_START" });
     fetch("https://chibapcmartdemo.onrender.com/api/v1/products")
       .then((res) => res.json())
       .then((data) => {
         dispatch({ type: "FETCHING_SUCCESS", payload: data.result });
-      })
-      .catch(() => {
-        dispatch({ type: "FETCHING_ERROR" });
       });
   }, []);
 

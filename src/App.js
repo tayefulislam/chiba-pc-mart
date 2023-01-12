@@ -7,11 +7,16 @@ import Products from "./Pages/Admin/Dashboard/Products/Products";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <ProductProvider>
         <div className="grid grid-cols-2">
-          <Products></Products>
-          <Cart></Cart>
+          <div>
+            <Products></Products>
+          </div>
+
+          <div>
+            <Cart></Cart>
+          </div>
         </div>
       </ProductProvider>
     </div>

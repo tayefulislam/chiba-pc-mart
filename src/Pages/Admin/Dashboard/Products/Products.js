@@ -7,27 +7,21 @@ const Products = () => {
     state: { products, loading, error },
   } = useProducts();
 
-  console.log("Products", state);
-
-  let content;
+  // console.log("Products", products);
 
   if (loading) {
-    return (content = <p>Loading</p>);
-  }
-  if (loading) {
-    return (content = <p>Erre</p>);
-  }
-  if (loading) {
-    return (content = <p>Loading</p>);
+    return (
+      <div>
+        <p>Loading</p>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <div className="grid  grid-cols-2 sm:grid md:grid-cols-3 gap-3 px-2 mt-3">
-        {state?.products?.map((product, index) => {
-          return <Product product={product} key={index}></Product>;
-        })}
-      </div>
+    <div className="grid grid-cols-3 gap-3 px-2 mt-3">
+      {products?.map((product, index) => {
+        return <Product product={product} key={index}></Product>;
+      })}
     </div>
   );
 };
